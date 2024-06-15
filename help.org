@@ -1,0 +1,12 @@
+#+TITLE:  How to edit and run this presentation
+
+* How to run
+  - Simply open `preset.el` and press `C-v v`, that'll call `(eval-buffer)`.
+  - `F12` advances to the next step in the demonstration
+  - `M-F12` quits the demonstration immediately
+
+* How to write steps:
+  - https://github.com/howardabrams/demo-it/blob/main/demo-it.org#step-types
+
+* Customize and learn `demo-it`:
+  - `M-x info` --> Click "demo-it"
