@@ -1,8 +1,106 @@
-* Slide 1
+* Ractors are Ruby's goroutines
 
-Hello world.
-Hello _highlighted_ /highlighted/ *highlighted* =highlighted= ~highlighted~ +highlighted+ world
+* System threads, they are smart
 
-* Slide 2
+* goroutines - they are genius
 
-Well, good bye, I guess
+* Ruby before 3.0
+
+It's a bit ridiculous...
+
+* Introducing GVL!
+a.k.a. Global Virtual machine Lock
+a.k.a. Global Interpreter Lock (GIL)
+a.k.a. /(coming in a few slides)/
+
+* +Global+ Great Virtual machine Lock
+
+a.k.a. GVL
+
+pre Ruby 3.0:
+GVL = Global Interpreter Lock (GIL) = Global Virtual machine Lock
+
+Ruby 3.0+:
+GVL = a.k.a. Great Virtual machine Lock
+
+
+* M:1
+
+* M:M
+
+* Ruby 3.3, M:N
+
+* Why Ractors matter
+
+* Global Virtual machine Lock (GVL)
+a.k.a. Global Interpreter Lock (GIL)
+
+It supposedly saves us from the race conditions and thread safety bugs.
+But it doesn't.
+
+I will show you which race conditions many people believe it protects us from.
+
+* Running race condition as a full Ruby program
+
+- At first, with jRuby
+- And here is why this even happens, that little line
+- And now let's run it with Ruby MRI, our "usual Ruby", which does have Global Virtual machine Lock.
+
+* A little bit of refactoring
+
+It's a junior friendly talk, so I am blaming the juniors first :-)
+
+- Why race condition did happen despite the lock?
+  (/spolier alert/ it wasn't meant to)
+- Why did race condition appeared only after refactoring?
+- Why GVL even exists if it doesn't protect from race conditions?
+
+ Don't you worry, I will answer all those questions
+ but before that, I dare to confuse you even more for a bit
+
+* Without GVL, but on a single core
+
+Just to explore it a bit more, I am taking jRuby.
+Running it, confirming it does suffer from the same race condition.
+Now, I'll do a trick which Mac users cannot ;-)
+I will disable all the cores in my CPU but one.
+And will run the same code in jRuby, which doesn't have GVL.
+Question: will race condition disappear or not?
+  You don't have to say it, just keep your initial answer in mind and check what happens.
+
+- jruby with initial primes app, show it uses all cores (we need it for the contrast with one core)
+- disable all cores but one (ideally have htop/glance open so that it shrinks to just one core, that would be cool)
+- run race-conditions.rb with jRuby, get `RACE CONDITION DETECTED`
+
+(return the other cores, I'm going to need them later)
+
+Now. Why did the usual Ruby, Ruby MRI which has the lock, which always use only one core, and jRuby with only one core at its disposal, still have that race condition? The answer is:
+
+* Parallelism != Concurrency.
+
+A distinction between parallelism and concurrency is one of those things that you understand once and then it sticks to you for life. I do hope you take this home today.
+
+* Why GVL at all ?
+
+If it doesn't protect from race conditions?
+
+* Race conditions, context switching and Ruby GVL
+
+* Veeqo, Veeqo AMazon
+
+* +Global+ Great Virtual machine Lock and Ractors
+
+* M:1
+
+* M:M
+
+Here create just _one_ Ractor and show how two CPU cores are filled.
+If needed reduce the cores to two just to fill them up to 100%.
+
+* Ruby 3.3, M:N
+
+* Why Ractors matter
+
+Because many Ruby developers are now exposed to Go, voluntarily or not
+
+* How to contact me (and why)

@@ -10,3 +10,7 @@
 
 * Customize and learn `demo-it`:
   - `M-x info` --> Click "demo-it"
+
+* Org-mode formatting
+
+Hello _highlighted_ /highlighted/ *highlighted* =highlighted= ~highlighted~ +highlighted+ world
