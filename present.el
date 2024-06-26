@@ -63,6 +63,7 @@
 
 (defun brightonruby/reset-narrow-and-open-shell()
   (fancy-widen)
+  (centered-window-mode -1)
   (demo-it-run-in-shell "")
   (comint-clear-buffer)
   )
@@ -76,8 +77,7 @@
 ;; (demo-it-create :advanced-mode :insert-faster :use-shell
 ;;                 (demo-it-presentation "presentation.org") ; Ractors are Ruby's goroutines
 
-;;                 demo-it-presentation-advance
-
+;;                 ;; (demo-it-presentation "org-playground.org")
 
 
 ;;                 brightonruby/teardown
@@ -90,28 +90,29 @@
                 (demo-it-show-image "./ruby-3.3.0-release.png")
                 (demo-it-show-image "./ruby-3.3.0-release-m-n-ractors.png")
 
-                demo-it-presentation-return ; System threads, they are smart
+                brightonruby/back-to-presentation-slides ; System threads, they are smart
 
-                (demo-it-load-fancy-file "ractors-system-threads-demo.rs" :line 38 41 :left 2)
+                (brightonruby/show-source-code-file-and-narrow "ractors-system-threads-demo.rs" 38 41)
                 brightonruby/reset-narrow-and-open-shell
                 (demo-it-run-in-shell "rustc ractors-system-threads-demo.rs")
                 (demo-it-run-in-shell "./ractors-system-threads-demo")
 
-                demo-it-presentation-return ; goroutines - they are genius
+                brightonruby/back-to-presentation-slides ; goroutines - they are genius
 
-                (demo-it-load-fancy-file "ractors-goroutines-demo.go" :line 30 37 :left 3)
+                (brightonruby/show-source-code-file-and-narrow "ractors-goroutines-demo.go" 31 38)
                 brightonruby/reset-narrow-and-open-shell
                 (demo-it-run-in-shell "go build ractors-goroutines-demo.go")
                 (demo-it-run-in-shell "./ractors-goroutines-demo")
 
-                demo-it-presentation-return ; Ruby before 3.0. It's a bit ridiculous...
+                brightonruby/back-to-presentation-slides ; Ruby before 3.0. It's a bit straightforward...
 
                 (demo-it-load-fancy-file "ractors-ruby-threads-scheduling.rb" :line 28 34 :left)
                 brightonruby/reset-narrow-and-open-shell
                 (demo-it-run-in-shell "ruby ./ractors-ruby-threads-scheduling.rb")
 
-                demo-it-presentation-return ; Introducing GVL!
+                brightonruby/back-to-presentation-slides ; Introducing GVL!
 
+                ;; Compose a simplest race condition
                 (brightonruby/show-source-code-file "gvl-adding-10_000_000-to-bank-account.rb")
                 (brightonruby/show-source-code-file "gvl-adding-to-bank-account-10-times.rb")
                 (brightonruby/show-source-code-file "gvl-adding-to-bank-account-10-threads.rb")
@@ -119,22 +120,45 @@
                 brightonruby/reset-narrow-and-open-shell
                 (demo-it-run-in-shell "rvm jruby && ruby --version")
                 (demo-it-run-in-shell "ruby gvl-simplest-race-condition-demo.rb")
-                brightonruby/back-to-presentation-slides
 
-                demo-it-presentation-advance
+                ;; The line that caused the race condition
+                (brightonruby/show-source-code-file-and-narrow "gvl-simplest-race-condition-demo.rb" 13 13)
+                (brightonruby/show-source-code-file "gvl-race-condition-line-expanded.rb")
+                (split-window-horizontally)
 
-                (demo-it-load-fancy-file "many-ractors.rb" :line 23 31 :left)
-                brightonruby/reset-narrow-and-open-shell
-                (demo-it-run-in-shell "rvm 3.0")
-                (demo-it-run-in-shell "ruby ./many-ractors.rb")
+                ;; GVL seemlingly protects us
+                (brightonruby/show-source-code-file "gvl-seemingly-protects.rb")
+                (demo-it-run-in-shell "rvm 3.0 && ruby --version")
+                (demo-it-run-in-shell "ruby gvl-seemingly-protects.rb")
+                (brightonruby/show-source-code-file "gvl-innocent-refactoring.rb" 4)
+                (demo-it-run-in-shell "ruby gvl-innocent-refactoring.rb")
 
-                demo-it-presentation-return
+                brightonruby/back-to-presentation-slides ; Three questions
 
-                brightonruby/reset-narrow-and-open-shell
-                (demo-it-run-in-shell "rvm 3.3.2")
-                (demo-it-run-in-shell "ruby ./many-ractors.rb")
+                demo-it-presentation-advance ; Parellelism != Concurrency
+                demo-it-presentation-advance ; Parellelism != Concurrency, Two threads
+                demo-it-presentation-advance ; Parellelism != Concurrency, Neither parallel nor concurrent
+                demo-it-presentation-advance ; Parellelism != Concurrency, Parallel and Concurrent
+                demo-it-presentation-advance ; Parellelism != Concurrency, Concurrent but not parallel
 
-                demo-it-presentation-return
+
+                ;; demo-it-presentation-advance
+
+                ;; (demo-it-load-fancy-file "many-ractors.rb" :line 23 31 :left)
+                ;; brightonruby/reset-narrow-and-open-shell
+                ;; (demo-it-run-in-shell "rvm 3.0")
+                ;; (demo-it-run-in-shell "ruby ./many-ractors.rb")
+
+                ;; demo-it-presentation-return
+
+                ;; brightonruby/reset-narrow-and-open-shell
+                ;; (demo-it-run-in-shell "rvm 3.3.2")
+                ;; (demo-it-run-in-shell "ruby ./many-ractors.rb")
+
+                ;; demo-it-presentation-return
+
+                ;; demo-it-presentation-return ; M:M vs M:N
+                ;; (demo-it-show-image "./ruby-3.3.0-release-m-n-ractors.png")
 
                 brightonruby/teardown
                 )

@@ -16,14 +16,16 @@ func isPrime(n int) bool {
 	return true
 }
 
-func calculatePrimes() {
+func calculatePrimes() int {
 	num := 2
+	largest := num
 	for {
 		if isPrime(num) {
-
+			largest = num
 		}
 		num++
 	}
+	return largest
 }
 
 func main() {
