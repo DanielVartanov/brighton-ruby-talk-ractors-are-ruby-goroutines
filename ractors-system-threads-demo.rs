@@ -33,7 +33,8 @@ fn wait_for_input() {
 }
 
 fn main() {
-    let cpu_cores_number = thread::available_parallelism().unwrap().get();
+    let cpu_cores_number =
+        thread::available_parallelism().unwrap().get();
 
     for _ in 0..cpu_cores_number {
         thread::spawn(move || { calculate_primes(); });

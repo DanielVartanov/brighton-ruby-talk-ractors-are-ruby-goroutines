@@ -31,11 +31,12 @@ func calculatePrimes() int {
 func main() {
 	ch := make(chan struct{})
 
-	const tooMany = 1000;
+	const tooMany = 1000; // !!!
 
 	for i := 0; i < tooMany; i++ {
 		go calculatePrimes()
 		go func() { <-ch }()
+
 	}
 
 	// Wait indefinitely

@@ -1,10 +1,8 @@
 (require 'demo-it)
 
+
+
 (setq org-tree-slide-header nil)
-
-
-
-
 
 (setq demo-it--open-windows-size 100)
 (setq demo-it--text-scale 5)
@@ -52,8 +50,8 @@
   (message "")
   )
 
-(defun brightonruby/show-source-code-file-and-narrow (source-code-file line-start line-end)
-  (brightonruby/show-source-code-file source-code-file)
+(defun brightonruby/show-source-code-file-and-narrow (source-code-file line-start line-end &optional scale)
+  (brightonruby/show-source-code-file source-code-file scale)
   (demo-it-highlight-dwim :line line-start line-end)
 )
 
@@ -75,13 +73,18 @@
 
 
 ;; (demo-it-create :advanced-mode :insert-faster :use-shell
-;;                 (demo-it-presentation "presentation.org") ; Ractors are Ruby's goroutines
+;;                 ;; (centered-window-mode -1)
 
-;;                 ;; (demo-it-presentation "org-playground.org")
+;;                 ;; brightonruby/setup
+
+;;                 ;; (demo-it-presentation "presentation.org") ; Ractors are Ruby's goroutines
+
+;;                 (demo-it-presentation "org-playground.org")
 
 
 ;;                 brightonruby/teardown
 ;; )
+
 
 (demo-it-create :advanced-mode :insert-faster :use-shell
                 brightonruby/setup
@@ -92,7 +95,7 @@
 
                 brightonruby/back-to-presentation-slides ; System threads, they are smart
 
-                (brightonruby/show-source-code-file-and-narrow "ractors-system-threads-demo.rs" 38 41)
+                (brightonruby/show-source-code-file-and-narrow "ractors-system-threads-demo.rs" 39 42 4)
                 brightonruby/reset-narrow-and-open-shell
                 (demo-it-run-in-shell "rustc ractors-system-threads-demo.rs")
                 (demo-it-run-in-shell "./ractors-system-threads-demo")
@@ -141,24 +144,26 @@
                 demo-it-presentation-advance ; Parellelism != Concurrency, Parallel and Concurrent
                 demo-it-presentation-advance ; Parellelism != Concurrency, Concurrent but not parallel
 
+                demo-it-presentation-advance ; Three questions (1/3)
+                demo-it-presentation-advance ; Three questions (2/3)
+                demo-it-presentation-advance ; Three questions (3/3)
 
-                ;; demo-it-presentation-advance
+                demo-it-presentation-advance ; +Global+ Great Virtual machine Lock
+                demo-it-presentation-advance ; Ruby 3.0: Ractors were introduced (2020)
 
-                ;; (demo-it-load-fancy-file "many-ractors.rb" :line 23 31 :left)
-                ;; brightonruby/reset-narrow-and-open-shell
-                ;; (demo-it-run-in-shell "rvm 3.0")
-                ;; (demo-it-run-in-shell "ruby ./many-ractors.rb")
+                (brightonruby/show-source-code-file-and-narrow "ruby-3.0-ractors-multi-core-demo.rb" 18 19)
+                (demo-it-run-in-shell "rvm 3.0 && ruby --version")
+                (demo-it-run-in-shell "ruby ruby-3.0-ractors-multi-core-demo.rb")
 
-                ;; demo-it-presentation-return
+                brightonruby/back-to-presentation-slides ; Ruby 3.3: M:M vs M:N (2023)
+                (demo-it-show-image "./ruby-3.3-mm-vs-mn.png" :below)
 
-                ;; brightonruby/reset-narrow-and-open-shell
-                ;; (demo-it-run-in-shell "rvm 3.3.2")
-                ;; (demo-it-run-in-shell "ruby ./many-ractors.rb")
+                (brightonruby/show-source-code-file-and-narrow "ruby-3.3-lightweight-ractors-demo.rb" 18 26)
+                (demo-it-run-in-shell "rvm 3.3.2 && ruby --version")
+                (demo-it-run-in-shell "ruby ruby-3.3-lightweight-ractors-demo.rb")
 
-                ;; demo-it-presentation-return
-
-                ;; demo-it-presentation-return ; M:M vs M:N
-                ;; (demo-it-show-image "./ruby-3.3.0-release-m-n-ractors.png")
+                brightonruby/back-to-presentation-slides ; How to contact me (and why)
+                (demo-it-show-image "./contact.png" :below)
 
                 brightonruby/teardown
                 )

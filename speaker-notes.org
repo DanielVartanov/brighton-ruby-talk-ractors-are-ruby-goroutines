@@ -1,0 +1,195 @@
+* Introduction: Ractors are Ruby's goroutines
+
+--== МЕДЛЕННО И С АКСЕНТОМ==--
+
+ЧТЕ-ДМ:
+Thanks for your interest in the most recent developments in Ruby.
+During the next 30 minutes you are going to learn something very very recent, something that is still overlooked by the most Rubyists.
+
+Just a few months ago, on December the 25th...
+
+and this changed everything.
+Ractors have become as smart as cool as goroutines in Golang.
+
+This is a junior-friendly talk, so I will explain all the basic concepts mentioned here.
+
+In order to show how cool goroutines are I need to compare them to system threads.
+
+
+* System threads, they are smart
+
+Which low-level language to show it in?
+
+In real life it would waiting for database response, or reply from an API.
+  Most of our everyday tasks are IO-intensive (input/output intensive), not CPU-intensive
+
+By the way, *these are not pre-recorded slides*, everything shown on the screen is really happening on this laptop in real time.
+
+They are smart enough not to give CPU time to threads that are waiting or sleeping
+
+Kernel threads scheduler knows when there is a reply in the connection a thread is waiting for and wakes it up on time so that threads can continue working.
+
+
+* goroutines - they are genius
+
+//Explain goroutines
+goroutines are magical entities, you place the word `go` before a block
+and gets executed in parallel on a separate CPU core.
+
+please pay attention:
+ - There are 1000 goroutines
+ - they are waiting for go channel
+ - no overhead for creating 1000 threads
+
+because they achieve the same (and even more!) without an overhead of system threads
+no system thread is created when you spin up a goroutine!
+in contrast to threads, you can have thousands of goroutines and it will be cheap in memory, cheap in time (there is no system call!) and many tiny goroutines will be executed faster than many tiny threads because go switches between goroutines faster
+
+moreover go scheduler is able to do something nuanced and related solely Go:
+for instance, not to give CPU time that are waiting for a Go channel. Systems thread cannot do that because they don't know what channels are and go channels do not use system IO
+and it knows when the channel get written into and runs the gorountines that now can read data from it
+
+! Actually create 1000 of busy routines, and 1000 waiting-for-channel routines
+  and show in htop that there are only 8 system threads
+
+* Ruby before 3.0. It is, well, quite straightforward...
+
+Fold the process in =htop= to show it is using 100%
+
+
+* Introducing GVL!
+
+GIL, GVM is the same. Further into this talk we will rename it again.
+
+Many people heard that it is supposed to save us from race conditions.
+That we are paying a price of utilising only one CPU core for the protection from thread safety bug.
+
+Let's explore it bit, (!)but please keep in mind while I'm explaining global interpreter lock:
+  Ractors were introduced to Ruby to have multiple locks per Ruby process.
+  If you understand how one GVL works, you will understand a half of what Ractors are about.
+
+
+Now, for the sake of the junior devs in this audience I will quickly demonstrate an example of the simplest race condition ever.
+
+* 10_000_000
+
+Imagine we want to have millions of pounds in our bank account.
+We do it by adding a pound after a pound, one by one.
+If only it was that easy in real life.
+I once had Amazon acquired a startup I co-founded, I still don't have that much.
+
+
+* Race Condition with jRuby, without GVL
+
+It's an implementation of Ruby interpreter that is written in Jave, and it does not have a GVL, out of the box it utilises multiple CPU cores
+So, in order to show you what does GVL seemingly protects from, at first I need to run it without protection.
+
+BTW, our "usual" ruby is called CRuby, or Ruby MRI
+MRI = Matz Ruby Interpreter, and
+Matz = Yukihiro Matsumoto
+
+
+*Summarise*: this was a race condition and we will now see if our usual CRuby protects us from it.
+
+* Innocent refactoring
+
+It's a junior friendly talk, so I am blaming the juniors first :-)
+
+* Three questions
+
+1. Why the race condition happened despite the lock and despite using only one core?
+2. Why the race condition happened only after a seemingly innocent refactoring?
+3. Why on Earth do we have to suffer from having only one core if GVL doesn't even protect us from the race conditions?
+
+
+*Summarise*: We now have three questions, after answering them we will finally be able to get to Ractors which, again, were introduced to have multiple GVLs, *but inside each ractor you still have a GVL*
+
+*Summarise*: these are the questions have now raised and going to answer them one by one
+
+* Parallelism != Concurrency
+
+It is one of those things that you understand once and it sticks with you for life.
+I really hope you take you will take this home today.
+
+* Parallelism != Concurrency. Neither parallel nor concurrent.
+
+When running two threads on a single CPU core, most people imagine it like this.
+Threads are coming one after another, forming an orderly line as if they lived in Britain.
+
+This is _not_ the case. This is _not_ how it's done.
+This is neither parallel nor concurrent.
+
+
+* Parallelism != Concurrency. Concurrent but not parallel
+
+But then then there is a special case: concurrent but not parallel.
+It allows one thread to run for number of milliseconds, then switches to another thread, runs it for a number of milliseconds, and so on and so forth until both threads are done.
+
+And *this* is what happens in Ruby with GVL.
+*This* is why we are having a race condition even if at any given time technically only thread is running.
+
+* Three questions
+
+Now, *before finally going back to Ractors*, let me clarify the last two things about GVL
+
+- Why did refactoring cancel protection?
+  Do you remember in concurrent programming threads replace each other at the CPU core?
+  Those moments are called context switching and in Ruby MRI in particular
+  they happen when you enter or exit a method, therefore introduction of method calls
+  allowed the threads to switch at the worst possible moment, thus causing a race condition.
+
+  But the *main lesson* here is that you should always assume context switching can happen at any moment. Exact points of switching are an internal business of Ruby MRI and can change at any moment.
+
+- Why do we need GVL at all?!
+  Short answer - and I hope you will take this home today too - is that GVL was invented and introduced solely for the convenience of the Ruby interpreter developers.
+  It wasn't done for us, for our code, it was created for the internal Ruby code.
+  It protects internal Ruby parts from being damaged by concurrent access.
+  When you call array methods, string methods and so on, those methods are 100% protected from race conditions by GVL, but your code around those methods *isn't even meant* to be protected by GVL.
+
+* +Global+ Great Virtual machine Lock
+
+Ractors bring multiple GVLs to Ruby, but again, each Ractor has a GVL inside.
+So *everything you learned about GVL will be relevant for a long time*.
+
+Obviously Global Virtual machine Lock isn't global anymore, so it is going to have a new name, perhaps Great Virtual machine Lock.
+
+If you think these race conditions don't apply to you because you don't spawn threads, think again: In Rails, Puma is configure by default to run threads.
+Not to mention Sidekiq, which is heavily threaded. If your application is not threadsafe, you might be exposed to these weird bugs.
+
+* Ruby 3.0: Ractors were introduced
+
+Being limited to just one core was a huge problem of Ruby, so Ractors were introduced to solve this.
+
+Look, 200%, they really utilise multiple cores out of the box.
+
+Before that, the only way to utilise multiple cores was *forking* a process, which has even large overhead than creating system threads.
+
+* ruby-3.0-ractors-multi-core-demo.rb
+
+That was a huge step forward in 2020, but at that time they were quite inefficient.
+I can't even create a thousand ractors, my laptop would freeze.
+Because for every Ractor in Ruby 3.0 a system thread was created, again it was about the overhead.
+
+
+* Ruby 3.3: M:M vs M:N
+
+Ruby 3.3 fixes all of those but's.
+
+It took three years of very hard work by Ruby core team to have a next leap forward
+
+Remember goroutines, they are lightweight, not bound to threads, do not suffer from system calls overhead. You could spawn then in thousands!
+
+Please see, the CPU cores are underutilised because system threads scheduler cannot detect ractors are waiting for messages because messaging is an internal nuance of Ruby.
+
+
+           M:M means that for every M ractors Ruby 3.0 created M system threads,
+           and M:N means that for every M ractors only N system threads are created, and that N is configurable but should roughly be equal to the amount of available CPU cores
+               this requries a very, VERY comples scheduler which MRI developers did write for us, it is as smart as the one Golang has for goroutines, look:
+        - 2000 Ractors, half are CPU-intensive, half are waiting for a message from another ractor
+          - notes: 2000 Ractors, no system threads over head, all CPU cores loaded up to 100%, no CPU time is given to the Ractors waiting of messages,
+            total victory! A round of applause for MRI developers!
+
+
+It took more than 3 years, it was a damn hard work being done by Ruby core team
+
+Don't forget that inside each Ractor you do have a GVL, the lock, but it is now local to the ractor.

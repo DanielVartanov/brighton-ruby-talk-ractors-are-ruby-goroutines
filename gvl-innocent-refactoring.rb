@@ -1,8 +1,8 @@
-def read_from_bank_account
+def read # <===
   @bank_account
 end
 
-def write_to_bank_account(value)
+def write(value) # <===
   @bank_account = value
 end
 
@@ -11,11 +11,11 @@ end
 10.times.map do
   Thread.new do
     1_000_000.times do
-      value = read_from_bank_account
-            # ^^^^^^^^^^^^^^^^^^^^^^ Extracted method
+      value = read
+            # ^^^^ Extracted method
       value = value + 1
-      @bank_account = write_to_bank_account(value)
-                    # ^^^^^^^^^^^^^^^^^^^^^ Extracted method
+      @bank_account = write(value)
+                    # ^^^^^ Extracted method
     end
   end
 end.each(&:join)
