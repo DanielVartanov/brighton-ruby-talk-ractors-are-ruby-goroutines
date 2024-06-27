@@ -173,6 +173,8 @@ Because for every Ractor in Ruby 3.0 a system thread was created, again it was a
 
 * Ruby 3.3: M:M vs M:N
 
+It took more than 3 years, it was a damn hard work being done by Ruby core team.
+
 Ruby 3.3 fixes all of those but's.
 
 It took three years of very hard work by Ruby core team to have a next leap forward
@@ -182,14 +184,12 @@ Remember goroutines, they are lightweight, not bound to threads, do not suffer f
 Please see, the CPU cores are underutilised because system threads scheduler cannot detect ractors are waiting for messages because messaging is an internal nuance of Ruby.
 
 
-           M:M means that for every M ractors Ruby 3.0 created M system threads,
-           and M:N means that for every M ractors only N system threads are created, and that N is configurable but should roughly be equal to the amount of available CPU cores
-               this requries a very, VERY comples scheduler which MRI developers did write for us, it is as smart as the one Golang has for goroutines, look:
-        - 2000 Ractors, half are CPU-intensive, half are waiting for a message from another ractor
-          - notes: 2000 Ractors, no system threads over head, all CPU cores loaded up to 100%, no CPU time is given to the Ractors waiting of messages,
-            total victory! A round of applause for MRI developers!
+2000 Ractors, no system threads over head, all CPU cores loaded up to 100%, no CPU time is given to the Ractors waiting of messages,
+total victory! A round of applause for MRI developers!
 
-
-It took more than 3 years, it was a damn hard work being done by Ruby core team
 
 Don't forget that inside each Ractor you do have a GVL, the lock, but it is now local to the ractor.
+
+* How to contact me and why
+
+I lead startups, I consult businesses, I am in general a useful contact, **I love connecting people**

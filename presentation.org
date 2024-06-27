@@ -14,11 +14,9 @@
    a.k.a. Global Interpreter Lock (GIL)
    a.k.a. /(coming in a few slides)/
 
-* Three questions
+* Two questions
 
    - [ ] Why didn't GVL and using a single core help?
-
-   - [ ] Why did refactoring cancel protection?
 
    - [ ] Why do we need GVL at all?!
 
@@ -87,33 +85,18 @@
    |========================== Timeline ===========================>
 
 
-* Three questions (1/3)
+* Two questions (1/2)
 
    - [x] +Why didn't GVL and using a single core help?+
      *Answer*: Because threads are concurrent despite not being parallel.
-
-   - [ ] Why did refactoring cancel protection?
 
    - [ ] Why do we need GVL at all?!
 
 
-* Three questions (2/3)
+* Two questions (2/2)
 
    - [x] +Why didn't GVL and using a single core help?+
      *Answer*: Because threads are concurrent despite not being parallel.
-
-   - [x] +Why did refactoring cancel protection?+
-     *Answer*: Because context switching might happen at any moment.
-
-   - [ ] Why do we need GVL at all?!
-
-* Three questions (3/3)
-
-   - [x] +Why didn't GVL and using a single core help?+
-     *Answer*: Because threads are concurrent despite not being parallel.
-
-   - [x] +Why did refactoring cancel protection?+
-     *Answer*: Because context switching might happen at any moment.
 
    - [x] +Why do we need GVL at all?!+
      *Answer*: Because it protects Ruby interpreter's internal parts.
@@ -126,6 +109,8 @@
    /Note: GVLs are still present, one per Ractor/
 
 * Ruby 3.0: Ractors were introduced (2020)
+
+   And they still suffered from system threads' overhead
 
 * Ruby 3.3: M:M vs M:N (2023)
 

@@ -27,9 +27,6 @@ threads = []
 
 threads += num_cores.times.map do
   Thread.new { calculate_primes }
-end
-
-threads += num_cores.times.map do
   Thread.new { wait_for_input }
 end
 

@@ -109,7 +109,7 @@
 
                 brightonruby/back-to-presentation-slides ; Ruby before 3.0. It's a bit straightforward...
 
-                (demo-it-load-fancy-file "ractors-ruby-threads-scheduling.rb" :line 28 34 :left)
+                (demo-it-load-fancy-file "ractors-ruby-threads-scheduling.rb" :line 28 31 :left)
                 brightonruby/reset-narrow-and-open-shell
                 (demo-it-run-in-shell "ruby ./ractors-ruby-threads-scheduling.rb")
 
@@ -136,7 +136,7 @@
                 (brightonruby/show-source-code-file "gvl-innocent-refactoring.rb" 4)
                 (demo-it-run-in-shell "ruby gvl-innocent-refactoring.rb")
 
-                brightonruby/back-to-presentation-slides ; Three questions
+                brightonruby/back-to-presentation-slides ; Two questions
 
                 demo-it-presentation-advance ; Parellelism != Concurrency
                 demo-it-presentation-advance ; Parellelism != Concurrency, Two threads
@@ -144,16 +144,11 @@
                 demo-it-presentation-advance ; Parellelism != Concurrency, Parallel and Concurrent
                 demo-it-presentation-advance ; Parellelism != Concurrency, Concurrent but not parallel
 
-                demo-it-presentation-advance ; Three questions (1/3)
-                demo-it-presentation-advance ; Three questions (2/3)
-                demo-it-presentation-advance ; Three questions (3/3)
+                demo-it-presentation-advance ; Two questions (1/2)
+                demo-it-presentation-advance ; Two questions (2/2)
 
                 demo-it-presentation-advance ; +Global+ Great Virtual machine Lock
-                demo-it-presentation-advance ; Ruby 3.0: Ractors were introduced (2020)
-
-                (brightonruby/show-source-code-file-and-narrow "ruby-3.0-ractors-multi-core-demo.rb" 18 19)
-                (demo-it-run-in-shell "rvm 3.0 && ruby --version")
-                (demo-it-run-in-shell "ruby ruby-3.0-ractors-multi-core-demo.rb")
+                demo-it-presentation-advance ; Ruby 3.0: Ractors were introduced (2020). And they were less than ideal...
 
                 brightonruby/back-to-presentation-slides ; Ruby 3.3: M:M vs M:N (2023)
                 (demo-it-show-image "./ruby-3.3-mm-vs-mn.png" :below)
