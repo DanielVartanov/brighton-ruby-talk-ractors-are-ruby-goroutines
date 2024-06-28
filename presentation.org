@@ -16,7 +16,7 @@
 
 * Two questions
 
-   - [ ] Why didn't GVL and using a single core help?
+   - [ ] Why did the GVL and using a single core not prevent the race condition?
 
    - [ ] Why do we need GVL at all?!
 
@@ -87,7 +87,7 @@
 
 * Two questions (1/2)
 
-   - [x] +Why didn't GVL and using a single core help?+
+   - [x] +Why did the GVL and using a single core not prevent the race condition?+
      *Answer*: Because threads are concurrent despite not being parallel.
 
    - [ ] Why do we need GVL at all?!
@@ -95,7 +95,7 @@
 
 * Two questions (2/2)
 
-   - [x] +Why didn't GVL and using a single core help?+
+   - [x] +Why did the GVL and using a single core not prevent the race condition?+
      *Answer*: Because threads are concurrent despite not being parallel.
 
    - [x] +Why do we need GVL at all?!+
@@ -114,7 +114,7 @@
 #+BEGIN_SRC RUBY
 
    Ractor.new { run_stuff_in_parallel }
-   Ractor.new { run_stuff_in_parallel }
+   Ractor.new { run_more_stuff_in_parallel }
 
 #+END_SRC
 
