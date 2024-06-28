@@ -72,19 +72,6 @@
   )
 
 
-;; (demo-it-create :advanced-mode :insert-faster :use-shell
-;;                 ;; (centered-window-mode -1)
-
-;;                 ;; brightonruby/setup
-
-;;                 ;; (demo-it-presentation "presentation.org") ; Ractors are Ruby's goroutines
-
-;;                 (demo-it-presentation "org-playground.org")
-
-
-;;                 brightonruby/teardown
-;; )
-
 
 (demo-it-create :advanced-mode :insert-faster :use-shell
                 brightonruby/setup
@@ -95,7 +82,7 @@
 
                 brightonruby/back-to-presentation-slides ; System threads, they are smart
 
-                (brightonruby/show-source-code-file-and-narrow "ractors-system-threads-demo.rs" 39 42 4)
+                (brightonruby/show-source-code-file-and-narrow "ractors-system-threads-demo.rs" 38 42 4)
                 brightonruby/reset-narrow-and-open-shell
                 (demo-it-run-in-shell "rustc ractors-system-threads-demo.rs")
                 (demo-it-run-in-shell "./ractors-system-threads-demo")
@@ -162,5 +149,20 @@
 
                 brightonruby/teardown
                 )
+
+;; (demo-it-create :advanced-mode :insert-faster :use-shell
+;;                 ;; (centered-window-mode -1)
+
+;;                 ;; brightonruby/setup
+
+;;                 ;; (demo-it-presentation "presentation.org") ; Ractors are Ruby's goroutines
+
+;;                 (demo-it-presentation "org-playground.org")
+
+
+;;                 brightonruby/teardown
+;; )
+
+
 
 (demo-it-start)

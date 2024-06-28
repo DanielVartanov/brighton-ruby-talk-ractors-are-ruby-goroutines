@@ -1,6 +1,6 @@
 use std::thread;
 use std::time::Duration;
-use std::io::{self, Write};
+use std::io::{self};
 
 fn is_prime(n: u64) -> bool {
     if n <= 1 {
@@ -26,7 +26,6 @@ fn calculate_primes() {
 
 fn wait_for_input() {
     loop {
-        io::stdout().flush().unwrap();
         let mut input = String::new();
         io::stdin().read_line(&mut input).unwrap();
     }

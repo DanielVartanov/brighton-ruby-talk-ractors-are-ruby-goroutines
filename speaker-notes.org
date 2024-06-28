@@ -95,6 +95,8 @@ Matz = Yukihiro Matsumoto
 
 It's a junior friendly talk, so I am blaming the juniors first :-)
 
+*Summarise*: Not only race condition happen in Ruby despite GVL, they happen when you least expect it
+
 * Three questions
 
 1. Why the race condition happened despite the lock and despite using only one core?
@@ -183,6 +185,9 @@ Remember goroutines, they are lightweight, not bound to threads, do not suffer f
 
 Please see, the CPU cores are underutilised because system threads scheduler cannot detect ractors are waiting for messages because messaging is an internal nuance of Ruby.
 
+
+Ideally you should configure it, making it roughly equal to the number of CPU cores available.
+But it is coming.
 
 2000 Ractors, no system threads over head, all CPU cores loaded up to 100%, no CPU time is given to the Ractors waiting of messages,
 total victory! A round of applause for MRI developers!

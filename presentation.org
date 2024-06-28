@@ -6,7 +6,7 @@
 
 * Ruby before 3.0
 
-   It is, well, quite straightforward...
+   It was limited to one CPU core only
 
 * Introducing GVL!
 
@@ -110,7 +110,15 @@
 
 * Ruby 3.0: Ractors were introduced (2020)
 
-   And they still suffered from system threads' overhead
+
+#+BEGIN_SRC RUBY
+
+   Ractor.new { run_stuff_in_parallel }
+   Ractor.new { run_stuff_in_parallel }
+
+#+END_SRC
+
+   But they still suffered from the system threads' overhead
 
 * Ruby 3.3: M:M vs M:N (2023)
 
