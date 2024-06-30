@@ -1,21 +1,8 @@
 (require 'demo-it)
 
-
-
 (setq org-tree-slide-header nil)
-
 (setq demo-it--open-windows-size 100)
 (setq demo-it--text-scale 5)
-
-;; (demo-it-create :advanced-mode :insert-faster :use-shell
-;;                 brightonruby/setup
-;;                 brightonruby/setup-shell
-;;                 (demo-it-presentation "presentation.org")
-                ;; Run compilers in "normal" demo-it shell! vterm is
-                ;; needed only for htop!
-                ;; (demo-it-run-in-shell "htop --filter=system-threads", "htop", :instant)
-;;                 )
-
 
 (defun brightonruby/setup()
   (centered-window-mode -1)
@@ -100,7 +87,7 @@
                 brightonruby/reset-narrow-and-open-shell
                 (demo-it-run-in-shell "ruby ./ractors-ruby-threads-scheduling.rb")
 
-                brightonruby/back-to-presentation-slides ; Introducing GVL!
+                brightonruby/back-to-presentation-slides ; Introducing GVL
 
                 ;; Compose a simplest race condition
                 (brightonruby/show-source-code-file "gvl-adding-10_000_000-to-bank-account.rb")
@@ -149,20 +136,5 @@
 
                 brightonruby/teardown
                 )
-
-;; (demo-it-create :advanced-mode :insert-faster :use-shell
-;;                 ;; (centered-window-mode -1)
-
-;;                 ;; brightonruby/setup
-
-;;                 ;; (demo-it-presentation "presentation.org") ; Ractors are Ruby's goroutines
-
-;;                 (demo-it-presentation "org-playground.org")
-
-
-;;                 brightonruby/teardown
-;; )
-
-
 
 (demo-it-start)

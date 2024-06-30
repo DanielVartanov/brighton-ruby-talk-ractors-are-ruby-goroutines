@@ -1,8 +1,5 @@
 * Introduction: Ractors are Ruby's goroutines
 
---== МЕДЛЕННО И С АКСЕНТОМ==--
-
-ЧТЕ-ДМ:
 Thanks for your interest in the most recent developments in Ruby.
 During the next 30 minutes you are going to learn something very very recent, something that is still overlooked by the most Rubyists.
 
